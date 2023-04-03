@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const {hash} = require("bcrypt");
+const {validationResult} = require("express-validator");
+
 const {user} = require("./db");
 
 const tools = {
@@ -18,37 +20,24 @@ const tools = {
 module.exports = {
     tools,
     login: async function (req, res) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).send({errors: errors.mapped()});
+        }
         try {
-            const User = await user.findFirst({
-                where: {
-                    username: req.body.username
-                }
-            });
-            if (User == null) {
-                res.status(400).send({
-                    errors: {
-                        username: "Username tidak terdaftar"
-                    }
-                })
-            }
-            const valid = await bcrypt.compare(req.body.password, User.password);
-            if (valid) {
-                const token = tools.signToken(User);
-                res.status(200).send({token});
-            } else {
-                res.status(400).send({
-                    errors: {
-                        password: "Password salah"
-                    }
-                });
-            }
+            const token = tools.signToken(req.User);
+            res.status(200).send({token});
         } catch (e) {
-            res.status(500).send(e);
+            res.status(500).send({errors: e});
         }
     },
     register: async function (req, res) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).send({errors: errors.mapped()});
+        }
         try {
-            const password = await bcrypt.hash(req.body.password, process.env.SALT_BCRYPT);
+            const password = await hash(req.body.password, process.env.SALT_BCRYPT);
             const User = await user.create({
                 data: {
                     username: req.body.username,
@@ -61,7 +50,7 @@ module.exports = {
                 token
             });
         } catch (e) {
-            res.status(500).send(e);
+            res.status(500).send({errors: e});
         }
     }
 };
