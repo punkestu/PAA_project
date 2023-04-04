@@ -1,4 +1,3 @@
-const {tools} = require("../controller/auth");
 const {menu, favorite} = require("../controller/db");
 
 module.exports = {
