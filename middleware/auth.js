@@ -1,8 +1,21 @@
 const {body} = require("express-validator");
 const {compare} = require("bcrypt");
 const {user} = require("../controller/db");
+const tools = require("../tools/tools");
 
 module.exports = {
+    auth: async function (req, res, next) {
+        if (req.headers.authorization) {
+            const token = req.headers.authorization.split(' ');
+            req.User = await tools.validateToken(token[1]);
+
+            if (req.User) {
+                next();
+            }
+        } else {
+            return res.status(403).send({msg: "Unauthorized"});
+        }
+    },
     login: [
         body("username")
             .notEmpty().withMessage("Username harus diisi")
