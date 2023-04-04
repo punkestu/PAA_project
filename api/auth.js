@@ -7,11 +7,11 @@ router.get("/", function (req, res) {
 });
 
 router.post("/login",
-    authMiddleware.login,
     [
         authMiddleware.struct.username,
         authMiddleware.struct.password
     ],
+    authMiddleware.login,
     authController.login);
 
 router.post("/register",
@@ -22,5 +22,13 @@ router.post("/register",
     ],
     authMiddleware.register,
     authController.register);
+
+router.put("/password",
+    [
+        authMiddleware.struct.email,
+        authMiddleware.struct.password
+    ],
+    authMiddleware.changePassword,
+    authController.changePassword);
 
 module.exports = router;

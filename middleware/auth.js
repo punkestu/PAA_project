@@ -78,5 +78,17 @@ module.exports = {
                     throw new Error("Email sudah digunakan");
                 }
             })
+    ],
+    changePassword: [
+        body("email").custom(async (email, {req}) => {
+            req.User = await user.findFirst({
+                where: {
+                    email
+                }
+            });
+            if (!req.User) {
+                throw new Error("Username tidak ditemukan");
+            }
+        })
     ]
 };
