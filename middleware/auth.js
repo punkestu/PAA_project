@@ -33,8 +33,8 @@ module.exports = {
                 .notEmpty().withMessage("Email harus diisi")
                 .isEmail().withMessage("Email tidak valid")
     },
-    login: [
-        body("username")
+    exist: {
+        username: body("username")
             .custom(async (username, {req}) => {
                 req.User = await user.findFirst({
                     where: {
@@ -45,18 +45,20 @@ module.exports = {
                     throw new Error("Username tidak ditemukan");
                 }
             }),
-        body("password")
-            .custom(async (password, {req}) => {
-                if (req.User) {
-                    const valid = await compare(req.body.password, req.User.password);
-                    if (!valid) {
-                        throw new Error("Password salah");
+        email: body("email")
+            .custom(async (email) => {
+                const User = await user.findFirst({
+                    where: {
+                        email
                     }
+                });
+                if (!User) {
+                    throw new Error("Email tidak ditemukan");
                 }
             })
-    ],
-    register: [
-        body("username")
+    },
+    notExists: {
+        username: body("username")
             .custom(async (username) => {
                 const User = await user.findFirst({
                     where: {
@@ -67,7 +69,7 @@ module.exports = {
                     throw new Error("Username sudah digunakan");
                 }
             }),
-        body("email")
+        email: body("email")
             .custom(async (email) => {
                 const User = await user.findFirst({
                     where: {
@@ -78,17 +80,17 @@ module.exports = {
                     throw new Error("Email sudah digunakan");
                 }
             })
-    ],
-    changePassword: [
-        body("email").custom(async (email, {req}) => {
-            req.User = await user.findFirst({
-                where: {
-                    email
+    },
+    login: [
+        body("password")
+            .custom(async (password, {req}) => {
+                if (req.User) {
+                    const valid = await compare(req.body.password, req.User.password);
+                    if (!valid) {
+                        throw new Error("Password salah");
+                    }
                 }
-            });
-            if (!req.User) {
-                throw new Error("Username tidak ditemukan");
-            }
-        })
+            })
     ]
-};
+}
+;

@@ -9,7 +9,8 @@ router.get("/", function (req, res) {
 router.post("/login",
     [
         authMiddleware.struct.username,
-        authMiddleware.struct.password
+        authMiddleware.exist.username,
+        authMiddleware.struct.password,
     ],
     authMiddleware.login,
     authController.login);
@@ -17,18 +18,24 @@ router.post("/login",
 router.post("/register",
     [
         authMiddleware.struct.username,
+        authMiddleware.notExists.username,
         authMiddleware.struct.email,
+        authMiddleware.notExists.email,
         authMiddleware.struct.password
     ],
-    authMiddleware.register,
     authController.register);
+
+router.get("/email", [
+    authMiddleware.struct.email,
+
+]);
 
 router.put("/password",
     [
         authMiddleware.struct.email,
+        authMiddleware.exist.email,
         authMiddleware.struct.password
     ],
-    authMiddleware.changePassword,
     authController.changePassword);
 
 module.exports = router;
