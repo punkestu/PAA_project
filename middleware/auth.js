@@ -46,7 +46,7 @@ module.exports = {
                 }
             }),
         email: body("email")
-            .custom(async (email) => {
+            .custom(async (email, {req}) => {
                 req.User = await user.findFirst({
                     where: {
                         email
