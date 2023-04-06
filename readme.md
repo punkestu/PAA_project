@@ -1,7 +1,7 @@
 # PAA PROJECT
 Projek merupakan back-end dari projek API mata kuliah Pemrograman Antarmuka Aplikasi program studi Teknologi Informasi Universitas Jember tahun 2023.
 
-Untuk projek front-end untuk aplikasi ini dapat diakses pada [Projek front-end](https://github.com).
+Untuk projek front-end untuk aplikasi ini dapat diakses pada [Projek front-end](https://github.com/cikoedofebrian/locad-in).
 
 Projek ini menggunakan bahasa pemrograman JavaScript dengan framework:
 
