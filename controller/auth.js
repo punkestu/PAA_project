@@ -37,5 +37,28 @@ module.exports = {
         } catch (e) {
             res.status(500).send({errors: e});
         }
+    },
+    changePassword: async function (req, res){
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).send({errors: errors.mapped()});
+        }
+        try {
+            const password = await hash(req.body.password, process.env.SALT_BCRYPT);
+            const User = await user.update({
+                where: {
+                    email: req.User.email
+                },
+                data: {
+                    password
+                }
+            });
+            const token = signToken(User);
+            res.status(200).json({
+                token
+            });
+        } catch (e) {
+            res.status(500).send({errors: e});
+        }
     }
 };
