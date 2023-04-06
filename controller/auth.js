@@ -38,6 +38,16 @@ module.exports = {
             res.status(500).send({errors: e});
         }
     },
+    checkEmail: function(req,res){
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).send({errors: errors.mapped()});
+        }
+        const token = signToken(req.User);
+        res.status(200).json({
+            token
+        });
+    },
     changePassword: async function (req, res){
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

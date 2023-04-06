@@ -47,12 +47,12 @@ module.exports = {
             }),
         email: body("email")
             .custom(async (email) => {
-                const User = await user.findFirst({
+                req.User = await user.findFirst({
                     where: {
                         email
                     }
                 });
-                if (!User) {
+                if (!req.User) {
                     throw new Error("Email tidak ditemukan");
                 }
             })
