@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "gen:salt": "node tools/genSalt.js",
+    "gen:key": "node tools/genPrivatekey.js",
+    "gen:env": "node tools/genEnv.js"
   },
   "keywords": [],
   "author": "",
