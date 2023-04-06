@@ -23,6 +23,7 @@ model Menu {
   nama_menu String
   deskripsi String
   thumbnail String?
+  harga     Int
   Favorite  Favorite[]
 }
 
