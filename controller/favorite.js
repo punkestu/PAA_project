@@ -9,6 +9,9 @@ module.exports = {
                     user: {
                         Id: userId
                     }
+                },
+                include: {
+                    menu: true
                 }
             });
             res.status(200).send({data: Favorites});
