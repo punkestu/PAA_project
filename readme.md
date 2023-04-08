@@ -32,7 +32,7 @@ DATABASE_URL="postgresql://<username>:<password>@localhost:5432/paa_project?sche
 ```
 Jalan migrasi database lalu masukan nama migrasi.
 ```
-npx prisma migrate dev
+npx prisma migrate deploy
 ```
 Jalankan aplikasi
 * dev
